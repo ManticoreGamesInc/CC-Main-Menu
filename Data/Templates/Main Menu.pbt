@@ -3982,5 +3982,6 @@ Assets {
     }
   }
   SerializationVersion: 119
+  DirectlyPublished: true
   VirtualFolderPath: "Main Menu"
 }
