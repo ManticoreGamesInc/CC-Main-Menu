@@ -24,6 +24,10 @@ local last_panel = nil
 local menu_showing = false
 
 local function on_button_hovered(button, txt)
+	if(last_panel ~= nil) then
+		return
+	end
+
 	txt:SetColor(HOVERED_COLOR)
 	txt.fontSize = HOVER_FONT_SIZE
 
@@ -65,6 +69,10 @@ local function show_menu(broadcast)
 end
 
 local function on_button_pressed(button, row, txt)
+	if(last_panel ~= nil) then
+		return
+	end
+
 	if(row.CloseUI) then
 		hide_menu()
 	elseif(row.Panel ~= nil) then
@@ -106,7 +114,7 @@ for index, row in ipairs(MAIN_MENU) do
 	local txt = button:FindDescendantByName("Text")
 
 	txt.text = row.Text
-	
+
 	button.hoveredEvent:Connect(on_button_hovered, txt)
 	button.unhoveredEvent:Connect(on_button_unhovered, txt)
 	button.pressedEvent:Connect(on_button_pressed, row, txt)
@@ -125,6 +133,10 @@ MENU.height = height
 function Tick(dt)
 	if(fade_in and not menu_showing) then
 		if(value < 1) then
+			if(CONTAINER.visibility == Visibility.FORCE_OFF) then
+				CONTAINER.visibility = Visibility.FORCE_ON
+			end
+
 			value = math.min(1, value + dt * FADE_IN_SPEED)
 			CONTAINER.opacity = value
 		else
@@ -138,6 +150,10 @@ function Tick(dt)
 		else
 			fade_out = false
 			menu_showing = false
+
+			if(CONTAINER.visibility == Visibility.FORCE_ON) then
+				CONTAINER.visibility = Visibility.FORCE_OFF
+			end
 		end
 	end
 end
