@@ -86,8 +86,10 @@ local function on_button_pressed(button, row, txt)
 		local close_button = last_panel:FindDescendantByName("Close")
 
 		if(close_button ~= nil) then
-			close_button.pressedEvent:Connect(function()
+			local close_event_handler = nil;
+			close_event_handler = close_button.pressedEvent:Connect(function()
 				AUDIO:Play()
+				close_event_handler:Disconnect()
 				last_panel.visibility = Visibility.FORCE_OFF
 				last_panel = nil
 			end)
